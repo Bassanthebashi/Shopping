@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,8 @@ using System.Security.Principal;
 
 namespace Shopping.Controllers
 {
+    [Authorize(Roles="Admin")]
+
     [Route("api/[controller]")]
     [ApiController]
     public class OrderController : ControllerBase
