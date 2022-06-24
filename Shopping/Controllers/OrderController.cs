@@ -11,7 +11,6 @@ using System.Security.Principal;
 
 namespace Shopping.Controllers
 {
-    [Authorize(Roles="Admin")]
 
     [Route("api/[controller]")]
     [ApiController]
@@ -29,6 +28,7 @@ namespace Shopping.Controllers
         }
 
         //GetAll OrdersRequest (Lazy Loading)
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public ActionResult<List<Order>> GetAll()
         {
@@ -36,6 +36,7 @@ namespace Shopping.Controllers
         }
 
         //GetAll OrdersRequest for approval (Eager Loading)
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         [Route("IncludingItems")]
         public ActionResult<List<OrderReadDTO>> GetAllIncludingItems()
@@ -45,7 +46,7 @@ namespace Shopping.Controllers
             return ordersRead;
         }
 
-
+        [Authorize(Roles = "Admin")]
         [HttpGet("{orderId:Guid}")]
         public ActionResult<OrderReadDTO> GetById(Guid orderId)
         {
@@ -57,6 +58,7 @@ namespace Shopping.Controllers
         }
 
         //Approve Order
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [Route("Approve/{orderId:Guid}")]
         public ActionResult Approve(Guid orderId)
@@ -70,12 +72,13 @@ namespace Shopping.Controllers
 
             if (order.Approval)
             {
-                return Ok("Order is Already Approved");
+                return Ok();
             }
             order.Approval = true;
             UnitOfWork.OrderRepo.SaveChanges();
-            return Ok("Order Approved");
+            return Ok("{'success':'true'}");
         }
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [Route("Reject/{orderId:Guid}")]
         public ActionResult Reject(Guid orderId)
@@ -93,9 +96,10 @@ namespace Shopping.Controllers
             }
             order.Approval = false;
             UnitOfWork.OrderRepo.SaveChanges();
-            return Ok("Order Rejected");
+            return Ok("{'success':'true'}");
         }
         //Submit Order
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult> Submit(OrderWriteDTO orderWriteDTO)
         {

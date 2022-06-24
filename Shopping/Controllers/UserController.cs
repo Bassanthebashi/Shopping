@@ -96,5 +96,13 @@ namespace Shopping.Controllers
 
         }
 
+        [HttpGet]
+        public ActionResult GetUserDetails()
+        {
+            
+            var role = User.FindFirst(ClaimTypes.Role).Value;
+            var name= User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return Ok(new { role, name });
+        }
     }
 }
