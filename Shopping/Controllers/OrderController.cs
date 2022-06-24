@@ -96,7 +96,7 @@ namespace Shopping.Controllers
             }
             order.Approval = false;
             UnitOfWork.OrderRepo.SaveChanges();
-            return Ok("{'success':'true'}");
+            return Ok("Order Approved");
         }
         //Submit Order
         [Authorize]
